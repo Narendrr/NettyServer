@@ -1,9 +1,8 @@
-package com.nettyServer;// WebSocketServerHandler.java
+package com.nettyServer;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.*;
-
-import java.time.Instant;
 
 public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> {
 
@@ -18,31 +17,11 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         if (frame instanceof TextWebSocketFrame) {
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
             String receivedText = textFrame.text();
-            System.out.println("Received text: " + receivedText);
+            System.out.println("Received text from Client: " + receivedText);
 
-            // Extract client timestamp from the received message
-            long clientTimestamp = extractClientTimestamp(receivedText);
-
-            // Calculate and print round-trip latency
-            long roundTripLatency = Instant.now().toEpochMilli() - clientTimestamp;
-            System.out.println("Round-trip latency: " + roundTripLatency + " ms");
-
-            // Echo the received text back to the client with the server timestamp
-            String echoedMessage = "Server echo: " + receivedText + " Server timestamp: " + Instant.now().toEpochMilli();
+            // Echo the received text back to the client
+            String echoedMessage = "Server echo: " + receivedText;
             ctx.writeAndFlush(new TextWebSocketFrame(echoedMessage));
         }
-        // ... (handle other WebSocket frame types if necessary)
-    }
-
-    private long extractClientTimestamp(String receivedText) {
-        String[] parts = receivedText.split("Client timestamp: ");
-        if (parts.length == 2) {
-            try {
-                return Long.parseLong(parts[1].trim());
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        }
-        return 0L; // Default value if extraction fails
     }
 }
