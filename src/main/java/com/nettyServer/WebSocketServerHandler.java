@@ -19,7 +19,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             String receivedText = textFrame.text();
             System.out.println("Received text from Client: " + receivedText);
 
-            // Echo the received text back to the client
             String echoedMessage = "Server echo: " + receivedText;
             ctx.writeAndFlush(new TextWebSocketFrame(echoedMessage));
         }
