@@ -1,4 +1,4 @@
-package com.nettyServer;// WebSocketServer.java
+package com.nettyServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
